@@ -5,12 +5,13 @@ from redditAPI.redditFunctions import *
 class QuoteResource:
     def on_get(self, req, resp):
         """Handles GET requests"""
-        parse = req.query_string
-        if parse:
-            res = parse.split("=")[1]
+        if req.get_param("q"):
+            res = req.get_param("q")
             back = grabapi(res)
-
-        if not parse:
+        elif req.get_param("tag"):
+            res = req.get_param("tag")
+            back = grabapi(res)
+        else:
             back = grabapi()
 
         resp.media = back
